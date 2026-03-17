@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Andrés Alarcón | Financial Projects Portfolio</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 40px;
+      background-color: #f9f9f9;
+      color: #333;
+    }
+    h1, h2 {
+      color: #1a1a1a;
+    }
+    .container {
+      max-width: 900px;
+      margin: auto;
+    }
+    .project {
+      background: white;
+      padding: 20px;
+      margin-bottom: 20px;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    }
+    .section-title {
+      margin-top: 10px;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Andrés Alarcón</h1>
+    <p>
+      Financial Analyst specializing in financial modeling, data analysis, and business performance optimization.
+      Experienced in developing dashboards and analytical tools to support strategic and investment decisions.
+    </p>
+
+    <h2>Projects</h2>
+
+    <div class="project">
+      <h3>Personal Finance & Investment Dashboard</h3>
+
+      <p class="section-title">Context</p>
+      <p>Developed a financial dashboard to track personal and investment performance across multiple income streams.</p>
+
+      <p class="section-title">Objective</p>
+      <p>Provide clear visibility on financial position, cash flow, and investment returns.</p>
+
+      <p class="section-title">Approach</p>
+      <p>Built using Power BI, integrating multiple data sources and optimizing data models using Power Query.</p>
+
+      <p class="section-title">Key Insights</p>
+      <p>Identified spending patterns and allocation inefficiencies, improving capital distribution decisions.</p>
+
+      <p class="section-title">Impact</p>
+      <p>Increased efficiency in financial tracking and improved decision-making speed.</p>
+    </div>
+
+  </div>
+</body>
+</html>
