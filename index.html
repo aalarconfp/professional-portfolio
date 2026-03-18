@@ -1,0 +1,700 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Andrés Felipe Alarcón — Financial Projects Portfolio</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300&family=DM+Mono:wght@300;400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --navy:      #0d1b2e;
+      --navy-mid:  #112240;
+      --white:     #ffffff;
+      --off-white: #f8fafc;
+      --gray-100:  #f1f5f9;
+      --gray-200:  #e2e8f0;
+      --gray-300:  #cbd5e1;
+      --gray-500:  #64748b;
+      --gray-700:  #334155;
+      --gray-900:  #0f172a;
+      --text:      #1e293b;
+
+      /* ── Tag palette ── */
+      /* Tool = yellow-amber */
+      --tag-tool-bg:     #fef3c7;
+      --tag-tool-text:   #92400e;
+      --tag-tool-border: #fcd34d;
+
+      /* Finance = red */
+      --tag-fin-bg:      #fee2e2;
+      --tag-fin-text:    #991b1b;
+      --tag-fin-border:  #fca5a5;
+
+      /* Data = blue */
+      --tag-data-bg:     #dbeafe;
+      --tag-data-text:   #1e40af;
+      --tag-data-border: #93c5fd;
+
+      /* Other = purple */
+      --tag-other-bg:    #ede9fe;
+      --tag-other-text:  #5b21b6;
+      --tag-other-border:#c4b5fd;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--white);
+      color: var(--text);
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 400;
+      line-height: 1.7;
+      overflow-x: hidden;
+    }
+
+    /* ── NAV ──────────────────────────────── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0; z-index: 100;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 3rem;
+      background: rgba(255,255,255,0.97);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--gray-200);
+    }
+
+    .nav-brand {
+      font-size: 0.92rem;
+      font-weight: 600;
+      color: var(--navy);
+      text-decoration: none;
+    }
+
+    .nav-links { display: flex; gap: 2rem; list-style: none; }
+
+    .nav-links a {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.67rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--gray-500);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .nav-links a:hover { color: var(--navy); }
+
+    /* ── HERO ─────────────────────────────── */
+    .hero {
+      background: var(--navy);
+      padding: 10rem 3rem 6rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::after {
+      content: '';
+      position: absolute;
+      right: -120px; top: -120px;
+      width: 480px; height: 480px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(37,99,235,0.2) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .hero-inner {
+      max-width: 1000px;
+      margin: 0 auto;
+      position: relative; z-index: 1;
+    }
+
+    .hero-eyebrow {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.65rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: #94a3b8;
+      margin-bottom: 1.8rem;
+      display: flex;
+      align-items: center;
+      gap: 0.7rem;
+    }
+
+    .hero-eyebrow::before {
+      content: '';
+      width: 24px; height: 1px;
+      background: #64748b;
+      flex-shrink: 0;
+    }
+
+    h1 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(3rem, 6.5vw, 5.2rem);
+      font-weight: 300;
+      line-height: 1.05;
+      color: #ffffff;
+      margin-bottom: 1.4rem;
+    }
+
+    h1 .dim { color: rgba(255,255,255,0.45); font-style: italic; }
+
+    .hero-subtitle {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.7rem;
+      letter-spacing: 0.15em;
+      color: #94a3b8;
+      text-transform: uppercase;
+      margin-bottom: 2.5rem;
+    }
+
+    .hero-divider {
+      width: 40px; height: 1px;
+      background: rgba(255,255,255,0.18);
+      margin-bottom: 2rem;
+    }
+
+    .hero-bio {
+      max-width: 560px;
+      font-size: 0.96rem;
+      color: rgba(255,255,255,0.72);
+      line-height: 1.85;
+      margin-bottom: 2.5rem;
+    }
+
+    .hero-bio strong { color: #ffffff; font-weight: 500; }
+
+    .cred-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      padding: 0.55rem 1.2rem;
+      border: 1px solid rgba(255,255,255,0.25);
+      border-radius: 3px;
+      font-family: 'DM Mono', monospace;
+      font-size: 0.67rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.75);
+      text-decoration: none;
+      transition: all 0.2s;
+    }
+
+    .cred-btn:hover { border-color: rgba(255,255,255,0.55); color: #ffffff; }
+
+    /* ── TOOLS STRIP ──────────────────────── */
+    .tools-strip {
+      background: var(--off-white);
+      border-bottom: 1px solid var(--gray-200);
+      padding: 2rem 3rem;
+    }
+
+    .tools-inner {
+      max-width: 1000px;
+      margin: 0 auto;
+      display: grid;
+      /* Order: Accounting | Spreadsheet & Automation | Finance | Visualization */
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1rem 2rem;
+    }
+
+    .tool-group-label {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.57rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--gray-500);
+      margin-bottom: 0.45rem;
+      font-weight: 400;
+    }
+
+    .tool-group-items {
+      font-size: 0.84rem;
+      color: var(--gray-900);
+      font-weight: 500;
+      line-height: 1.6;
+    }
+
+    /* ── SECTION ──────────────────────────── */
+    section {
+      padding: 5rem 3rem;
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+
+    .section-header {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 2.5rem;
+      padding-bottom: 1rem;
+      border-bottom: 2px solid var(--gray-200);
+    }
+
+    .section-num {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.58rem;
+      color: var(--gray-500);
+      letter-spacing: 0.15em;
+    }
+
+    .section-title {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.72rem;
+      font-weight: 500;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--gray-700);
+    }
+
+    /* ── PROJECT CARDS ────────────────────── */
+    .projects-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1.5rem;
+    }
+
+    .project-card {
+      background: var(--white);
+      border: 1px solid var(--gray-200);
+      border-radius: 6px;
+      padding: 0;
+      text-decoration: none;
+      color: inherit;
+      display: flex;
+      flex-direction: column;
+      transition: box-shadow 0.25s, transform 0.25s;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .project-card:hover {
+      box-shadow: 0 10px 36px rgba(13,27,46,0.12);
+      transform: translateY(-3px);
+    }
+
+    /* Colored header band per card */
+    .card-band {
+      height: 6px;
+      width: 100%;
+      flex-shrink: 0;
+    }
+
+    .card-body {
+      padding: 1.8rem 2rem 1.6rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.8rem;
+      flex: 1;
+    }
+
+    .card-number {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.58rem;
+      color: var(--gray-500);
+      letter-spacing: 0.1em;
+    }
+
+    .card-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.5rem;
+      font-weight: 400;
+      color: var(--navy);
+      line-height: 1.2;
+    }
+
+    .card-desc {
+      font-size: 0.84rem;
+      color: var(--gray-700);
+      line-height: 1.75;
+      flex: 1;
+    }
+
+    .card-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.35rem;
+    }
+
+    /* ── TAGS ─────────────────────────────── */
+    .tag {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.59rem;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      padding: 0.22rem 0.58rem;
+      border-radius: 3px;
+      font-weight: 500;
+      border: 1px solid transparent;
+    }
+
+    .tag-tool  { background: var(--tag-tool-bg);  color: var(--tag-tool-text);  border-color: var(--tag-tool-border); }
+    .tag-fin   { background: var(--tag-fin-bg);   color: var(--tag-fin-text);   border-color: var(--tag-fin-border); }
+    .tag-data  { background: var(--tag-data-bg);  color: var(--tag-data-text);  border-color: var(--tag-data-border); }
+    .tag-other { background: var(--tag-other-bg); color: var(--tag-other-text); border-color: var(--tag-other-border); }
+
+    .card-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.9rem 2rem;
+      border-top: 1px solid var(--gray-100);
+      background: var(--off-white);
+    }
+
+    .card-status {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.6rem;
+      color: #059669;
+      font-weight: 500;
+      letter-spacing: 0.06em;
+    }
+
+    .card-arrow {
+      font-size: 1rem;
+      color: var(--gray-300);
+      transition: all 0.2s;
+    }
+
+    .project-card:hover .card-arrow { color: var(--navy); transform: translateX(4px); }
+
+    /* ── CARD COLOR BANDS ─────────────────── */
+    /* 01 Financial Statements — Red */
+    .band-red { background: linear-gradient(90deg, #dc2626 0%, #ef4444 100%); }
+    /* 02 Real Estate — Navy Blue */
+    .band-navy { background: linear-gradient(90deg, #0d1b2e 0%, #1e3a5f 100%); }
+    /* 03 Personal Budget — Light Blue / Orange / Purple */
+    .band-budget { background: linear-gradient(90deg, #38bdf8 0%, #fb923c 50%, #a78bfa 100%); }
+    /* 04 Trading — Blue / Light Orange */
+    .band-trading { background: linear-gradient(90deg, #2563eb 0%, #fb923c 100%); }
+
+    /* ── CONTACT ──────────────────────────── */
+    .contact-wrap {
+      background: var(--navy);
+      padding: 5rem 3rem;
+    }
+
+    .contact-inner { max-width: 1000px; margin: 0 auto; }
+
+    .contact-section-header {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 2.5rem;
+      padding-bottom: 1rem;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+    }
+
+    .contact-section-num {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.58rem;
+      color: #64748b;
+      letter-spacing: 0.15em;
+    }
+
+    .contact-section-title {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.72rem;
+      font-weight: 500;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: #94a3b8;
+    }
+
+    .contact-block {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 2rem;
+      flex-wrap: wrap;
+    }
+
+    .contact-text h3 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 2.2rem;
+      font-weight: 300;
+      color: #ffffff;
+      margin-bottom: 0.6rem;
+    }
+
+    .contact-text p {
+      font-size: 0.9rem;
+      color: rgba(255,255,255,0.65);
+      max-width: 380px;
+      line-height: 1.7;
+    }
+
+    .contact-links {
+      display: flex;
+      flex-direction: column;
+      gap: 0.8rem;
+      align-items: flex-end;
+    }
+
+    .contact-link {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.7rem;
+      letter-spacing: 0.07em;
+      color: rgba(255,255,255,0.65);
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      transition: color 0.2s;
+    }
+
+    .contact-link:hover { color: #ffffff; }
+
+    /* ── FOOTER ───────────────────────────── */
+    footer {
+      background: var(--navy-mid);
+      border-top: 1px solid rgba(255,255,255,0.07);
+      padding: 1.8rem 3rem;
+    }
+
+    .footer-inner {
+      max-width: 1000px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .footer-copy {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.6rem;
+      color: #64748b;
+    }
+
+    .footer-glossary {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.58rem;
+      color: #64748b;
+      text-align: right;
+    }
+
+    /* ── FADE IN ──────────────────────────── */
+    .fade-in { opacity: 0; transform: translateY(14px); animation: fadeUp 0.6s ease forwards; }
+    @keyframes fadeUp { to { opacity: 1; transform: translateY(0); } }
+    .fade-in:nth-child(1) { animation-delay: 0.05s; }
+    .fade-in:nth-child(2) { animation-delay: 0.18s; }
+    .fade-in:nth-child(3) { animation-delay: 0.30s; }
+
+    /* ── RESPONSIVE ───────────────────────── */
+    @media (max-width: 768px) {
+      nav { padding: 1rem 1.5rem; }
+      .nav-links { display: none; }
+      .hero { padding: 8rem 1.5rem 4rem; }
+      .tools-strip, section, .contact-wrap, footer { padding-left: 1.5rem; padding-right: 1.5rem; }
+      .tools-inner { grid-template-columns: repeat(2, 1fr); }
+      .projects-grid { grid-template-columns: 1fr; }
+      .contact-block { flex-direction: column; align-items: flex-start; }
+      .contact-links { align-items: flex-start; }
+      .footer-inner { flex-direction: column; align-items: flex-start; }
+      .footer-glossary { text-align: left; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <a href="index.html" class="nav-brand">Andrés Felipe Alarcón</a>
+    <ul class="nav-links">
+      <li><a href="#projects">Projects</a></li>
+      <li><a href="https://www.credential.net/profile/aalarconfp/wallet" target="_blank">Credentials</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </nav>
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-inner">
+      <div class="fade-in">
+        <p class="hero-eyebrow">Financial Projects Portfolio</p>
+        <h1>Andrés Felipe<br><span class="dim">Alarcón</span></h1>
+        <p class="hero-subtitle">Senior Finance &amp; Accounting Professional · Medellín, Colombia</p>
+      </div>
+      <div class="fade-in">
+        <div class="hero-divider"></div>
+        <p class="hero-bio">
+          Senior business and finance professional with deep expertise in
+          <strong>financial analysis, forecasting, and performance management</strong>.
+          Background spans <strong>financial control, accounting, and FP&amp;A</strong>
+          across the financial, real estate, and professional services sectors.
+          Specialized in translating complex data into <strong>clear, decision-driving insights</strong>.
+        </p>
+      </div>
+      <div class="fade-in">
+        <a href="https://www.credential.net/profile/aalarconfp/wallet" target="_blank" class="cred-btn">
+          ↗ View Credentials
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- TOOLS STRIP — Order: Accounting | Spreadsheet & Automation | Finance | Visualization -->
+  <div class="tools-strip">
+    <div class="tools-inner">
+      <div>
+        <div class="tool-group-label">Accounting</div>
+        <div class="tool-group-items">Financial Control<br>Financial Reporting</div>
+      </div>
+      <div>
+        <div class="tool-group-label">Spreadsheet &amp; Automation</div>
+        <div class="tool-group-items">Excel · Power Query<br>VBA</div>
+      </div>
+      <div>
+        <div class="tool-group-label">Finance</div>
+        <div class="tool-group-items">Financial Modeling<br>FP&amp;A · SQL</div>
+      </div>
+      <div>
+        <div class="tool-group-label">Visualization</div>
+        <div class="tool-group-items">Power BI<br>Power Pivot</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PROJECTS -->
+  <section id="projects">
+    <div class="section-header">
+      <span class="section-num">01 /</span>
+      <span class="section-title">Selected Projects</span>
+    </div>
+
+    <div class="projects-grid">
+
+      <!-- 01 Financial Statements — Red -->
+      <a href="financial-statements-dashboard.html" class="project-card">
+        <div class="card-band band-red"></div>
+        <div class="card-body">
+          <div class="card-number">Project — 01</div>
+          <div class="card-title">Financial Statements Dashboard</div>
+          <p class="card-desc">
+            Four-year historical analysis of Terpel's financials built on official Supersociedades data.
+            Covers balance sheet, P&amp;L, horizontal analysis, key ratios, and free cash flow — designed
+            for investment decision support and financial health monitoring.
+          </p>
+          <div class="card-tags">
+            <span class="tag tag-tool">Power BI</span>
+            <span class="tag tag-fin">Financial Analysis</span>
+            <span class="tag tag-fin">Financial Ratios</span>
+            <span class="tag tag-other">Financial Control</span>
+          </div>
+        </div>
+        <div class="card-footer">
+          <span class="card-status">● Live</span>
+          <span class="card-arrow">→</span>
+        </div>
+      </a>
+
+      <!-- 02 Real Estate — Navy Blue -->
+      <a href="real-estate-dashboard.html" class="project-card">
+        <div class="card-band band-navy"></div>
+        <div class="card-body">
+          <div class="card-number">Project — 02</div>
+          <div class="card-title">Real Estate Dashboard</div>
+          <p class="card-desc">
+            Property performance and portfolio analytics dashboard built in Power BI.
+            Designed for real estate investors and property managers tracking operational
+            and financial KPIs across a portfolio of assets.
+          </p>
+          <div class="card-tags">
+            <span class="tag tag-tool">Power BI</span>
+            <span class="tag tag-fin">Real Estate Finance</span>
+            <span class="tag tag-other">Property Management</span>
+            <span class="tag tag-data">Data Analytics</span>
+          </div>
+        </div>
+        <div class="card-footer">
+          <span class="card-status">● Live</span>
+          <span class="card-arrow">→</span>
+        </div>
+      </a>
+
+      <!-- 03 Personal Budget — Light Blue / Orange / Purple -->
+      <a href="personal-budget-dashboard.html" class="project-card">
+        <div class="card-band band-budget"></div>
+        <div class="card-body">
+          <div class="card-number">Project — 03</div>
+          <div class="card-title">Personal Budget Dashboard</div>
+          <p class="card-desc">
+            Comprehensive personal finance tracking dashboard with income/expense categorization,
+            net worth evolution, and budget variance analysis. Built as a reusable template
+            adaptable to any individual's financial structure.
+          </p>
+          <div class="card-tags">
+            <span class="tag tag-tool">Power BI</span>
+            <span class="tag tag-fin">Budgeting</span>
+            <span class="tag tag-other">Net Worth Tracker</span>
+            <span class="tag tag-data">Personal Finance</span>
+          </div>
+        </div>
+        <div class="card-footer">
+          <span class="card-status">● Live</span>
+          <span class="card-arrow">→</span>
+        </div>
+      </a>
+
+      <!-- 04 Trading — Blue / Light Orange -->
+      <a href="trading-dashboard.html" class="project-card">
+        <div class="card-band band-trading"></div>
+        <div class="card-body">
+          <div class="card-number">Project — 04</div>
+          <div class="card-title">Trading Dashboard</div>
+          <p class="card-desc">
+            Technical analysis dashboard for Dow Jones using SQL-sourced data.
+            Visualizes price action, volume, momentum indicators, and trend signals to
+            support data-driven trading decisions.
+          </p>
+          <div class="card-tags">
+            <span class="tag tag-tool">Tableau</span>
+            <span class="tag tag-data">SQL</span>
+            <span class="tag tag-fin">Technical Analysis</span>
+            <span class="tag tag-other">Data Analytics</span>
+          </div>
+        </div>
+        <div class="card-footer">
+          <span class="card-status">● Live</span>
+          <span class="card-arrow">→</span>
+        </div>
+      </a>
+
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <div class="contact-wrap" id="contact">
+    <div class="contact-inner">
+      <div class="contact-section-header">
+        <span class="contact-section-num">02 /</span>
+        <span class="contact-section-title">Contact</span>
+      </div>
+      <div class="contact-block">
+        <div class="contact-text">
+          <h3>Let's work together.</h3>
+          <p>Open to financial consulting projects, data analytics and accounting process engagements.</p>
+        </div>
+        <div class="contact-links">
+          <a href="mailto:aalarconfp@gmail.com" class="contact-link">✉ aalarconfp@gmail.com</a>
+          <a href="https://www.credential.net/profile/aalarconfp/wallet" target="_blank" class="contact-link">↗ Accredible Credentials</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-inner">
+      <span class="footer-copy">© 2026 Andrés Felipe Alarcón · Financial Projects Portfolio</span>
+      <span class="footer-glossary">*Financial Control: accounting, tax &amp; audit, reporting &nbsp;·&nbsp; *FP&amp;A: financial analysis, budgeting &amp; forecasting, strategy</span>
+    </div>
+  </footer>
+
+</body>
+</html>
