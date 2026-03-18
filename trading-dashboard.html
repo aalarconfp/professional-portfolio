@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Trading Dashboard — Andrés Felipe Alarcón</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300&family=DM+Mono:wght@300;400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --navy:      #0d1b2e;
+      --navy-mid:  #112240;
+      --white:     #ffffff;
+      --off-white: #f8fafc;
+      --gray-100:  #f1f5f9;
+      --gray-200:  #e2e8f0;
+      --gray-300:  #cbd5e1;
+      --gray-500:  #64748b;
+      --gray-700:  #334155;
+      --gray-900:  #0f172a;
+      --text:      #1e293b;
+      --blue:      #1d4ed8;
+      --tag-tool-bg:#fef3c7; --tag-tool-text:#92400e; --tag-tool-border:#fcd34d;
+      --tag-fin-bg: #fee2e2; --tag-fin-text: #991b1b; --tag-fin-border: #fca5a5;
+      --tag-data-bg:#dbeafe; --tag-data-text:#1e40af; --tag-data-border:#93c5fd;
+      --tag-other-bg:#ede9fe;--tag-other-text:#5b21b6;--tag-other-border:#c4b5fd;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { background: var(--white); color: var(--text); font-family: 'DM Sans', sans-serif; font-weight: 400; line-height: 1.7; }
+
+    nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; display: flex; justify-content: space-between; align-items: center; padding: 1rem 3rem; background: rgba(255,255,255,0.97); backdrop-filter: blur(16px); border-bottom: 1px solid var(--gray-200); }
+    .nav-brand { font-size: 0.92rem; font-weight: 600; color: var(--navy); text-decoration: none; }
+    .nav-back { font-family: 'DM Mono', monospace; font-size: 0.67rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--gray-500); text-decoration: none; transition: color 0.2s; }
+    .nav-back:hover { color: var(--navy); }
+
+    /* Blue / Light Orange gradient band */
+    .project-hero { background: var(--navy); padding: 8rem 3rem 4rem; border-top: 6px solid transparent; border-image: linear-gradient(90deg, #2563eb, #fb923c) 1; }
+    .project-hero-inner { max-width: 860px; margin: 0 auto; }
+
+    .breadcrumb { font-family: 'DM Mono', monospace; font-size: 0.62rem; letter-spacing: 0.12em; text-transform: uppercase; color: #64748b; margin-bottom: 2rem; display: flex; align-items: center; gap: 0.5rem; }
+    .breadcrumb a { color: #94a3b8; text-decoration: none; transition: color 0.2s; }
+    .breadcrumb a:hover { color: #ffffff; }
+    .project-num { font-family: 'DM Mono', monospace; font-size: 0.6rem; color: #64748b; letter-spacing: 0.18em; margin-bottom: 0.8rem; }
+
+    h1 { font-family: 'Cormorant Garamond', serif; font-size: clamp(2.4rem, 5vw, 3.6rem); font-weight: 300; color: #ffffff; line-height: 1.1; margin-bottom: 1.8rem; }
+
+    .meta-row { display: flex; gap: 2rem; flex-wrap: wrap; align-items: center; margin-bottom: 1.4rem; }
+    .meta-item { font-family: 'DM Mono', monospace; font-size: 0.62rem; color: #64748b; letter-spacing: 0.1em; text-transform: uppercase; }
+    .meta-item span { color: rgba(255,255,255,0.75); }
+    .meta-item .live { color: #34d399; }
+
+    .tags { display: flex; flex-wrap: wrap; gap: 0.35rem; margin-bottom: 2rem; }
+    .tag { font-family: 'DM Mono', monospace; font-size: 0.59rem; letter-spacing: 0.06em; text-transform: uppercase; padding: 0.22rem 0.58rem; border-radius: 3px; font-weight: 500; border: 1px solid transparent; }
+    .tag-tool  { background: var(--tag-tool-bg);  color: var(--tag-tool-text);  border-color: var(--tag-tool-border); }
+    .tag-fin   { background: var(--tag-fin-bg);   color: var(--tag-fin-text);   border-color: var(--tag-fin-border); }
+    .tag-data  { background: var(--tag-data-bg);  color: var(--tag-data-text);  border-color: var(--tag-data-border); }
+    .tag-other { background: var(--tag-other-bg); color: var(--tag-other-text); border-color: var(--tag-other-border); }
+
+    .action-links { display: flex; gap: 0.8rem; flex-wrap: wrap; }
+    .action-btn { display: inline-flex; align-items: center; gap: 0.45rem; padding: 0.6rem 1.2rem; font-family: 'DM Mono', monospace; font-size: 0.67rem; letter-spacing: 0.08em; text-transform: uppercase; text-decoration: none; border-radius: 3px; transition: all 0.2s; }
+    .action-btn.primary { background: #ffffff; color: var(--navy); font-weight: 600; }
+    .action-btn.primary:hover { background: var(--off-white); }
+    .action-btn.secondary { border: 1px solid rgba(255,255,255,0.25); color: rgba(255,255,255,0.7); }
+    .action-btn.secondary:hover { border-color: rgba(255,255,255,0.5); color: #ffffff; }
+
+    .page-wrap { max-width: 860px; margin: 0 auto; padding: 4rem 3rem 5rem; }
+    .project-body { display: flex; flex-direction: column; gap: 3rem; }
+
+    h2 { font-family: 'DM Mono', monospace; font-size: 0.68rem; font-weight: 500; letter-spacing: 0.15em; text-transform: uppercase; color: var(--gray-700); margin-bottom: 1.2rem; padding-bottom: 0.8rem; border-bottom: 1px solid var(--gray-200); }
+    p { font-size: 0.93rem; color: var(--gray-700); line-height: 1.85; margin-bottom: 0.75rem; }
+    p strong { color: var(--gray-900); font-weight: 600; }
+    ul { list-style: none; padding: 0; display: flex; flex-direction: column; gap: 0.6rem; }
+    ul li { font-size: 0.9rem; color: var(--gray-700); padding-left: 1.3rem; position: relative; line-height: 1.7; }
+    ul li::before { content: '—'; position: absolute; left: 0; color: var(--gray-300); }
+    ul li strong { color: var(--gray-900); font-weight: 600; }
+
+    /* Tableau embed — links out since Tableau Public doesn't support direct iframes well */
+    .tableau-preview {
+      border: 1px solid var(--gray-200);
+      border-radius: 6px;
+      overflow: hidden;
+      background: var(--navy);
+      min-height: 300px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 1.2rem;
+      padding: 3rem;
+      text-align: center;
+      position: relative;
+    }
+
+    .tableau-preview::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(37,99,235,0.15) 0%, rgba(251,146,60,0.1) 100%);
+      pointer-events: none;
+    }
+
+    .tableau-icon {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 3rem;
+      color: rgba(255,255,255,0.15);
+      font-style: italic;
+      position: relative;
+      z-index: 1;
+    }
+
+    .tableau-label {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.65rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.4);
+      position: relative;
+      z-index: 1;
+    }
+
+    .tableau-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      padding: 0.6rem 1.3rem;
+      background: rgba(255,255,255,0.9);
+      color: var(--navy);
+      font-family: 'DM Mono', monospace;
+      font-size: 0.67rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      text-decoration: none;
+      border-radius: 3px;
+      transition: background 0.2s;
+      position: relative;
+      z-index: 1;
+    }
+
+    .tableau-link:hover { background: #ffffff; }
+
+    /* Data fields */
+    .data-fields { background: var(--off-white); border: 1px solid var(--gray-200); border-radius: 4px; padding: 1.2rem 1.5rem; margin-top: 1rem; display: flex; flex-wrap: wrap; gap: 0.4rem; }
+    .field-chip { font-family: 'DM Mono', monospace; font-size: 0.65rem; color: var(--gray-700); background: var(--white); border: 1px solid var(--gray-200); border-radius: 3px; padding: 0.15rem 0.5rem; }
+
+    .note { font-style: italic; font-size: 0.82rem; color: var(--gray-500); border-left: 2px solid var(--gray-200); padding-left: 1rem; margin-top: 0.8rem; }
+
+    footer { background: var(--navy-mid); border-top: 1px solid rgba(255,255,255,0.07); padding: 1.8rem 3rem; }
+    .footer-inner { max-width: 860px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; }
+    .footer-copy { font-family: 'DM Mono', monospace; font-size: 0.6rem; color: #64748b; }
+    .footer-back { font-family: 'DM Mono', monospace; font-size: 0.62rem; color: #64748b; text-decoration: none; letter-spacing: 0.08em; transition: color 0.2s; }
+    .footer-back:hover { color: #ffffff; }
+
+    @media (max-width: 768px) {
+      nav, footer { padding-left: 1.5rem; padding-right: 1.5rem; }
+      .project-hero, .page-wrap { padding-left: 1.5rem; padding-right: 1.5rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <a href="index.html" class="nav-brand">Andrés Felipe Alarcón</a>
+    <a href="index.html" class="nav-back">← Portfolio</a>
+  </nav>
+
+  <div class="project-hero">
+    <div class="project-hero-inner">
+      <div class="breadcrumb">
+        <a href="index.html">Portfolio</a><span>/</span><span>Project 04</span>
+      </div>
+      <p class="project-num">Project — 04 / 04</p>
+      <h1>Trading<br>Dashboard</h1>
+
+      <div class="meta-row">
+        <span class="meta-item">Tool <span>Tableau</span></span>
+        <span class="meta-item">Data <span>SQL Server</span></span>
+        <span class="meta-item">Focus <span>US Equities</span></span>
+        <span class="meta-item">Status <span class="live">● Live</span></span>
+      </div>
+
+      <div class="tags">
+        <span class="tag tag-tool">Tableau</span>
+        <span class="tag tag-data">SQL</span>
+        <span class="tag tag-fin">Technical Analysis</span>
+        <span class="tag tag-fin">Financial Analysis</span>
+        <span class="tag tag-data">Data Analytics</span>
+        <span class="tag tag-other">Market Data</span>
+      </div>
+
+      <div class="action-links">
+        <a href="https://public.tableau.com/views/TradingDashboardCompleted_17673879471900/DowJonesTechnicalAnalysis?:language=en-US&:sid=&:redirect=auth&:display_count=n&:origin=viz_share_link" target="_blank" class="action-btn primary">↗ View Live Dashboard</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="page-wrap">
+    <div class="project-body">
+
+      <!-- TABLEAU PREVIEW BLOCK -->
+      <div>
+        <div class="tableau-preview">
+          <div class="tableau-icon">T</div>
+          <div class="tableau-label">Tableau Public · Dow Jones Technical Analysis</div>
+          <a href="https://public.tableau.com/views/TradingDashboardCompleted_17673879471900/DowJonesTechnicalAnalysis?:language=en-US&:sid=&:redirect=auth&:display_count=n&:origin=viz_share_link" target="_blank" class="tableau-link">
+            ↗ Open Interactive Dashboard
+          </a>
+        </div>
+      </div>
+
+      <!-- OVERVIEW -->
+      <div>
+        <h2>Overview</h2>
+        <p>
+          This dashboard provides an <strong>interactive trading and market analytics view
+          for US equities</strong>, designed to support <strong>daily decision-making for a
+          Sales &amp; Trading desk</strong>.
+        </p>
+        <p>
+          The objective is to analyze <strong>price action, volatility, volume, and relative
+          performance</strong> using historical and intraday market data, allowing traders to
+          quickly identify <strong>trends, breakouts, and high-impact movements</strong>
+          across multiple stocks.
+        </p>
+        <p class="note">Built in Tableau using SQL-processed data from a structured data warehouse. Focuses on historical and intraday market behavior only — does not include forecasting or valuation modeling.</p>
+      </div>
+
+      <!-- DATA -->
+      <div>
+        <h2>Market &amp; Price Data</h2>
+        <p>
+          Equity market data stored in a <strong>SQL Server data warehouse</strong>, structured
+          using a <strong>fact-and-dimension model</strong>. Data was
+          <strong>queried, cleaned, and modeled using SQL views</strong>, then connected
+          directly to Tableau. Two datasets are used due to different data granularities
+          (daily vs intraday), handled via <strong>Tableau data blending</strong>.
+        </p>
+        <ul>
+          <li>
+            <strong>Historical daily stock prices</strong> —
+            Open, High, Low, Close, Adjusted Close, Volume
+          </li>
+          <li>
+            <strong>Intraday stock attributes</strong> —
+            Last Bid, Market Cap, Beta, Open, High, Low, Volume
+          </li>
+          <li>
+            <strong>Reference data</strong> —
+            Ticker, Company, Industry, Exchange
+          </li>
+        </ul>
+      </div>
+
+      <!-- COMPONENTS -->
+      <div>
+        <h2>Dashboard Components</h2>
+        <p>
+          Provides a comprehensive view of <strong>market behavior, volatility, and relative
+          stock performance</strong>. Interactive parameters, filters, and actions allow users
+          to drill from a market-wide overview into a <strong>single-ticker focus</strong>.
+        </p>
+        <ul>
+          <li><strong>Candlestick Chart</strong> — Dynamic date selection to analyze price action</li>
+          <li><strong>Bollinger Bands</strong> — Adjustable moving average and volatility parameters to identify breakouts</li>
+          <li><strong>Volume Analysis</strong> — Traded volume including previous volume highs to confirm price strength</li>
+          <li><strong>Relative Growth Chart</strong> — Normalized performance comparison across multiple stocks</li>
+          <li><strong>Total Growth Heat Table</strong> — Quickly identify outperformers and underperformers</li>
+          <li><strong>Intraday BANS Metrics</strong> — Key real-time indicators: beta, market cap, latest bid, daily highs/lows</li>
+          <li><strong>Industry &amp; Ticker Treemap</strong> — Market weight and performance assessment by sector</li>
+          <li><strong>Dynamic News Feed</strong> — Responsive to selected ticker for contextual market insights</li>
+        </ul>
+      </div>
+
+      <!-- BUSINESS VALUE -->
+      <div>
+        <h2>Business Value</h2>
+        <p>
+          This dashboard demonstrates the ability to <strong>design and build production-grade
+          trading analytics tools</strong> from raw SQL data through to interactive visualization —
+          a workflow relevant to trading desks, equity research teams, and investment management
+          operations.
+        </p>
+        <p>
+          The combination of <strong>SQL data engineering and Tableau front-end</strong> shows
+          end-to-end ownership of the analytics stack, from data modeling to business-ready output.
+        </p>
+      </div>
+
+    </div>
+  </div>
+
+  <footer>
+    <div class="footer-inner">
+      <span class="footer-copy">© 2026 Andrés Felipe Alarcón</span>
+      <a href="index.html" class="footer-back">← Back to Portfolio</a>
+    </div>
+  </footer>
+
+</body>
+</html>

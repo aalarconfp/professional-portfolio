@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Personal Budget Dashboard — Andrés Felipe Alarcón</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300&family=DM+Mono:wght@300;400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --navy:      #0d1b2e;
+      --navy-mid:  #112240;
+      --white:     #ffffff;
+      --off-white: #f8fafc;
+      --gray-100:  #f1f5f9;
+      --gray-200:  #e2e8f0;
+      --gray-300:  #cbd5e1;
+      --gray-500:  #64748b;
+      --gray-700:  #334155;
+      --gray-900:  #0f172a;
+      --text:      #1e293b;
+      --blue:      #1d4ed8;
+      --tag-tool-bg:#fef3c7; --tag-tool-text:#92400e; --tag-tool-border:#fcd34d;
+      --tag-fin-bg: #fee2e2; --tag-fin-text: #991b1b; --tag-fin-border: #fca5a5;
+      --tag-data-bg:#dbeafe; --tag-data-text:#1e40af; --tag-data-border:#93c5fd;
+      --tag-other-bg:#ede9fe;--tag-other-text:#5b21b6;--tag-other-border:#c4b5fd;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { background: var(--white); color: var(--text); font-family: 'DM Sans', sans-serif; font-weight: 400; line-height: 1.7; }
+
+    nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; display: flex; justify-content: space-between; align-items: center; padding: 1rem 3rem; background: rgba(255,255,255,0.97); backdrop-filter: blur(16px); border-bottom: 1px solid var(--gray-200); }
+    .nav-brand { font-size: 0.92rem; font-weight: 600; color: var(--navy); text-decoration: none; }
+    .nav-back { font-family: 'DM Mono', monospace; font-size: 0.67rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--gray-500); text-decoration: none; transition: color 0.2s; }
+    .nav-back:hover { color: var(--navy); }
+
+    /* Light blue / orange / purple gradient band */
+    .project-hero { background: var(--navy); padding: 8rem 3rem 4rem; border-top: 6px solid transparent; border-image: linear-gradient(90deg, #38bdf8, #fb923c, #a78bfa) 1; }
+    .project-hero-inner { max-width: 860px; margin: 0 auto; }
+
+    .breadcrumb { font-family: 'DM Mono', monospace; font-size: 0.62rem; letter-spacing: 0.12em; text-transform: uppercase; color: #64748b; margin-bottom: 2rem; display: flex; align-items: center; gap: 0.5rem; }
+    .breadcrumb a { color: #94a3b8; text-decoration: none; transition: color 0.2s; }
+    .breadcrumb a:hover { color: #ffffff; }
+    .project-num { font-family: 'DM Mono', monospace; font-size: 0.6rem; color: #64748b; letter-spacing: 0.18em; margin-bottom: 0.8rem; }
+
+    h1 { font-family: 'Cormorant Garamond', serif; font-size: clamp(2.4rem, 5vw, 3.6rem); font-weight: 300; color: #ffffff; line-height: 1.1; margin-bottom: 1.8rem; }
+
+    .meta-row { display: flex; gap: 2rem; flex-wrap: wrap; align-items: center; margin-bottom: 1.4rem; }
+    .meta-item { font-family: 'DM Mono', monospace; font-size: 0.62rem; color: #64748b; letter-spacing: 0.1em; text-transform: uppercase; }
+    .meta-item span { color: rgba(255,255,255,0.75); }
+    .meta-item .live { color: #34d399; }
+
+    .tags { display: flex; flex-wrap: wrap; gap: 0.35rem; margin-bottom: 2rem; }
+    .tag { font-family: 'DM Mono', monospace; font-size: 0.59rem; letter-spacing: 0.06em; text-transform: uppercase; padding: 0.22rem 0.58rem; border-radius: 3px; font-weight: 500; border: 1px solid transparent; }
+    .tag-tool  { background: var(--tag-tool-bg);  color: var(--tag-tool-text);  border-color: var(--tag-tool-border); }
+    .tag-fin   { background: var(--tag-fin-bg);   color: var(--tag-fin-text);   border-color: var(--tag-fin-border); }
+    .tag-data  { background: var(--tag-data-bg);  color: var(--tag-data-text);  border-color: var(--tag-data-border); }
+    .tag-other { background: var(--tag-other-bg); color: var(--tag-other-text); border-color: var(--tag-other-border); }
+
+    .action-links { display: flex; gap: 0.8rem; flex-wrap: wrap; }
+    .action-btn { display: inline-flex; align-items: center; gap: 0.45rem; padding: 0.6rem 1.2rem; font-family: 'DM Mono', monospace; font-size: 0.67rem; letter-spacing: 0.08em; text-transform: uppercase; text-decoration: none; border-radius: 3px; transition: all 0.2s; }
+    .action-btn.primary { background: #ffffff; color: var(--navy); font-weight: 600; }
+    .action-btn.primary:hover { background: var(--off-white); }
+    .action-btn.secondary { border: 1px solid rgba(255,255,255,0.25); color: rgba(255,255,255,0.7); }
+    .action-btn.secondary:hover { border-color: rgba(255,255,255,0.5); color: #ffffff; }
+
+    .page-wrap { max-width: 860px; margin: 0 auto; padding: 4rem 3rem 5rem; }
+    .project-body { display: flex; flex-direction: column; gap: 3rem; }
+
+    h2 { font-family: 'DM Mono', monospace; font-size: 0.68rem; font-weight: 500; letter-spacing: 0.15em; text-transform: uppercase; color: var(--gray-700); margin-bottom: 1.2rem; padding-bottom: 0.8rem; border-bottom: 1px solid var(--gray-200); }
+    p { font-size: 0.93rem; color: var(--gray-700); line-height: 1.85; margin-bottom: 0.75rem; }
+    p strong { color: var(--gray-900); font-weight: 600; }
+    ul { list-style: none; padding: 0; display: flex; flex-direction: column; gap: 0.6rem; }
+    ul li { font-size: 0.9rem; color: var(--gray-700); padding-left: 1.3rem; position: relative; line-height: 1.7; }
+    ul li::before { content: '—'; position: absolute; left: 0; color: var(--gray-300); }
+    ul li strong { color: var(--gray-900); font-weight: 600; }
+
+    .embed-container { border: 1px solid var(--gray-200); border-radius: 6px; background: var(--off-white); overflow: hidden; }
+    .embed-label { padding: 0.75rem 1.2rem; border-bottom: 1px solid var(--gray-200); font-family: 'DM Mono', monospace; font-size: 0.62rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--gray-500); display: flex; justify-content: space-between; align-items: center; background: var(--white); }
+    .embed-dot { display: inline-block; width: 6px; height: 6px; border-radius: 50%; background: #34d399; margin-right: 0.4rem; }
+    .embed-container iframe { width: 100%; height: 460px; border: none; display: block; }
+
+    /* 50/30/20 rule callout */
+    .rule-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin-top: 1.2rem; }
+    .rule-card { border: 1px solid var(--gray-200); border-radius: 4px; padding: 1.2rem; text-align: center; background: var(--off-white); }
+    .rule-pct { font-family: 'Cormorant Garamond', serif; font-size: 2.2rem; font-weight: 300; color: var(--navy); line-height: 1; margin-bottom: 0.4rem; }
+    .rule-label { font-family: 'DM Mono', monospace; font-size: 0.62rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--gray-500); }
+    .rule-card.card-blue .rule-pct  { color: #0ea5e9; }
+    .rule-card.card-orange .rule-pct { color: #f97316; }
+    .rule-card.card-violet .rule-pct { color: #8b5cf6; }
+
+    .source-box { display: flex; align-items: center; gap: 1.2rem; padding: 0.9rem 1.2rem; border: 1px solid var(--gray-200); background: var(--off-white); border-radius: 3px; margin-top: 1.2rem; }
+    .source-label { font-family: 'DM Mono', monospace; font-size: 0.6rem; color: var(--gray-500); letter-spacing: 0.12em; text-transform: uppercase; white-space: nowrap; }
+    .source-box a { font-family: 'DM Mono', monospace; font-size: 0.68rem; color: var(--blue); text-decoration: none; font-weight: 500; }
+    .source-box a:hover { text-decoration: underline; }
+
+    .note { font-style: italic; font-size: 0.82rem; color: var(--gray-500); border-left: 2px solid var(--gray-200); padding-left: 1rem; margin-top: 0.8rem; }
+
+    footer { background: var(--navy-mid); border-top: 1px solid rgba(255,255,255,0.07); padding: 1.8rem 3rem; }
+    .footer-inner { max-width: 860px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; }
+    .footer-copy { font-family: 'DM Mono', monospace; font-size: 0.6rem; color: #64748b; }
+    .footer-back { font-family: 'DM Mono', monospace; font-size: 0.62rem; color: #64748b; text-decoration: none; letter-spacing: 0.08em; transition: color 0.2s; }
+    .footer-back:hover { color: #ffffff; }
+
+    @media (max-width: 768px) {
+      nav, footer { padding-left: 1.5rem; padding-right: 1.5rem; }
+      .project-hero, .page-wrap { padding-left: 1.5rem; padding-right: 1.5rem; }
+      .rule-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <a href="index.html" class="nav-brand">Andrés Felipe Alarcón</a>
+    <a href="index.html" class="nav-back">← Portfolio</a>
+  </nav>
+
+  <div class="project-hero">
+    <div class="project-hero-inner">
+      <div class="breadcrumb">
+        <a href="index.html">Portfolio</a><span>/</span><span>Project 03</span>
+      </div>
+      <p class="project-num">Project — 03 / 04</p>
+      <h1>Personal Budget<br>Dashboard</h1>
+
+      <div class="meta-row">
+        <span class="meta-item">Tool <span>Power BI</span></span>
+        <span class="meta-item">Source <span>Money Pro · Excel</span></span>
+        <span class="meta-item">Status <span class="live">● Live</span></span>
+      </div>
+
+      <div class="tags">
+        <span class="tag tag-tool">Power BI</span>
+        <span class="tag tag-fin">Budgeting</span>
+        <span class="tag tag-fin">Financial Analysis</span>
+        <span class="tag tag-other">Net Worth Tracker</span>
+        <span class="tag tag-other">Personal Finance</span>
+        <span class="tag tag-data">Data Analytics</span>
+        <span class="tag tag-fin">Financial Strategy</span>
+      </div>
+
+      <div class="action-links">
+        <a href="https://app.powerbi.com/view?r=eyJrIjoiNzhiZGFlNGYtNDAxMy00ODU3LTg4MzgtZmIwYjg5NDg1MTg1IiwidCI6Ijk5ZjdiNTVlLTljYmUtNDY3Yi04MTQzLTkxOTc4MjkxOGFmYiIsImMiOjR9" target="_blank" class="action-btn primary">↗ View Live Dashboard</a>
+        <a href="https://youtu.be/vPJNdx-KqZU" target="_blank" class="action-btn secondary">▶ 5-Min Walkthrough</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="page-wrap">
+    <div class="project-body">
+
+      <!-- EMBED -->
+      <div>
+        <div class="embed-container">
+          <div class="embed-label">
+            <span><span class="embed-dot"></span>Power BI · Live</span>
+            <span>Dashboard Personal Finance (Sample)</span>
+          </div>
+          <iframe
+            title="Dashboard Personal Finance"
+            src="https://app.powerbi.com/view?r=eyJrIjoiNzhiZGFlNGYtNDAxMy00ODU3LTg4MzgtZmIwYjg5NDg1MTg1IiwidCI6Ijk5ZjdiNTVlLTljYmUtNDY3Yi04MTQzLTkxOTc4MjkxOGFmYiIsImMiOjR9"
+            allowfullscreen="true">
+          </iframe>
+        </div>
+      </div>
+
+      <!-- OVERVIEW -->
+      <div>
+        <h2>Overview</h2>
+        <p>
+          This dashboard was designed to provide a <strong>comprehensive view of personal finances</strong>,
+          combining real accounting data, budgeting targets, and execution tracking in a single interface.
+        </p>
+        <p>
+          The goal is to <strong>improve personal financial decision-making</strong> through clear,
+          visual, and comparative indicators — tracking whether income, spending, and savings are
+          aligned with defined goals month by month.
+        </p>
+      </div>
+
+      <!-- DATA SOURCE -->
+      <div>
+        <h2>Data &amp; Methodology</h2>
+        <p>
+          Accounting data was initially recorded using the <strong>Money Pro</strong> app to track
+          income, expenses, and investment activity. It was then <strong>exported and structured
+          in Excel</strong>, serving as the direct data source for Power BI via dynamic integration.
+        </p>
+        <ul>
+          <li><strong>Income</strong> — All inflows by source and category</li>
+          <li><strong>Expenses</strong> — Categorized spending across fixed and variable costs</li>
+          <li><strong>Savings / Investments</strong> — Asset purchases, sales, and net position changes</li>
+        </ul>
+        <div class="source-box">
+          <span class="source-label">Data Source</span>
+          <a href="https://money.pro/es/iphone/" target="_blank">↗ Money Pro App</a>
+        </div>
+      </div>
+
+      <!-- BUDGET METHODOLOGY -->
+      <div>
+        <h2>Budget Methodology — 50/30/20 Rule</h2>
+        <p>
+          The budget was built in Excel based on the client's personal income and savings goals,
+          following the <strong>50/30/20 framework</strong> as a baseline allocation model:
+        </p>
+        <div class="rule-grid">
+          <div class="rule-card card-blue">
+            <div class="rule-pct">50%</div>
+            <div class="rule-label">Basic Expenses</div>
+          </div>
+          <div class="rule-card card-orange">
+            <div class="rule-pct">30%</div>
+            <div class="rule-label">Personal / Discretionary</div>
+          </div>
+          <div class="rule-card card-violet">
+            <div class="rule-pct">20%</div>
+            <div class="rule-label">Savings &amp; Investments</div>
+          </div>
+        </div>
+        <p class="note" style="margin-top:1.2rem;">Allocations are adjusted to the client's actual income structure and goals — the 50/30/20 rule serves as a starting framework, not a rigid constraint.</p>
+      </div>
+
+      <!-- COMPONENTS -->
+      <div>
+        <h2>Dashboard Components</h2>
+        <p>
+          Compares <strong>targets vs actual performance</strong>, displaying monthly,
+          cumulative (YTD), and annual KPIs across all financial categories.
+        </p>
+        <ul>
+          <li><strong>Comparative Charts</strong> — Income, expenses, and savings vs budget targets</li>
+          <li><strong>Interactive Buttons</strong> — Toggle between Income Target %, Budget %, and Net Worth Target %</li>
+          <li><strong>Category Breakdown</strong> — Detailed view by month and YTD performance</li>
+          <li><strong>Annual Summaries</strong> — By category, counterparty, and financial position</li>
+          <li><strong>Trend Charts</strong> — Income, expense, and savings evolution over time</li>
+        </ul>
+      </div>
+
+      <!-- BUSINESS VALUE -->
+      <div>
+        <h2>Business Value</h2>
+        <p>
+          This dashboard gives individuals and financial advisors a <strong>structured, data-driven
+          view of personal financial health</strong> — replacing manual spreadsheet reviews with
+          an interactive tool that flags budget deviations and tracks net worth progression in real time.
+        </p>
+        <p>
+          Built as a <strong>reusable template</strong> adaptable to any individual's income
+          structure, expense categories, and savings objectives.
+        </p>
+      </div>
+
+    </div>
+  </div>
+
+  <footer>
+    <div class="footer-inner">
+      <span class="footer-copy">© 2026 Andrés Felipe Alarcón</span>
+      <a href="index.html" class="footer-back">← Back to Portfolio</a>
+    </div>
+  </footer>
+
+</body>
+</html>

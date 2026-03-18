@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Real Estate Dashboard — Andrés Felipe Alarcón</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300&family=DM+Mono:wght@300;400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --navy:      #0d1b2e;
+      --navy-mid:  #112240;
+      --white:     #ffffff;
+      --off-white: #f8fafc;
+      --gray-100:  #f1f5f9;
+      --gray-200:  #e2e8f0;
+      --gray-300:  #cbd5e1;
+      --gray-500:  #64748b;
+      --gray-700:  #334155;
+      --gray-900:  #0f172a;
+      --text:      #1e293b;
+      --blue:      #1d4ed8;
+      --tag-tool-bg:#fef3c7; --tag-tool-text:#92400e; --tag-tool-border:#fcd34d;
+      --tag-fin-bg: #fee2e2; --tag-fin-text: #991b1b; --tag-fin-border: #fca5a5;
+      --tag-data-bg:#dbeafe; --tag-data-text:#1e40af; --tag-data-border:#93c5fd;
+      --tag-other-bg:#ede9fe;--tag-other-text:#5b21b6;--tag-other-border:#c4b5fd;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { background: var(--white); color: var(--text); font-family: 'DM Sans', sans-serif; font-weight: 400; line-height: 1.7; }
+
+    nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; display: flex; justify-content: space-between; align-items: center; padding: 1rem 3rem; background: rgba(255,255,255,0.97); backdrop-filter: blur(16px); border-bottom: 1px solid var(--gray-200); }
+    .nav-brand { font-size: 0.92rem; font-weight: 600; color: var(--navy); text-decoration: none; }
+    .nav-back { font-family: 'DM Mono', monospace; font-size: 0.67rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--gray-500); text-decoration: none; transition: color 0.2s; }
+    .nav-back:hover { color: var(--navy); }
+
+    /* Navy blue band for Real Estate */
+    .project-hero { background: var(--navy); padding: 8rem 3rem 4rem; border-top: 6px solid #1e3a5f; }
+    .project-hero-inner { max-width: 860px; margin: 0 auto; }
+
+    .breadcrumb { font-family: 'DM Mono', monospace; font-size: 0.62rem; letter-spacing: 0.12em; text-transform: uppercase; color: #64748b; margin-bottom: 2rem; display: flex; align-items: center; gap: 0.5rem; }
+    .breadcrumb a { color: #94a3b8; text-decoration: none; transition: color 0.2s; }
+    .breadcrumb a:hover { color: #ffffff; }
+    .project-num { font-family: 'DM Mono', monospace; font-size: 0.6rem; color: #64748b; letter-spacing: 0.18em; margin-bottom: 0.8rem; }
+
+    h1 { font-family: 'Cormorant Garamond', serif; font-size: clamp(2.4rem, 5vw, 3.6rem); font-weight: 300; color: #ffffff; line-height: 1.1; margin-bottom: 1.8rem; }
+
+    .meta-row { display: flex; gap: 2rem; flex-wrap: wrap; align-items: center; margin-bottom: 1.4rem; }
+    .meta-item { font-family: 'DM Mono', monospace; font-size: 0.62rem; color: #64748b; letter-spacing: 0.1em; text-transform: uppercase; }
+    .meta-item span { color: rgba(255,255,255,0.75); }
+    .meta-item .live { color: #34d399; }
+
+    .tags { display: flex; flex-wrap: wrap; gap: 0.35rem; margin-bottom: 2rem; }
+    .tag { font-family: 'DM Mono', monospace; font-size: 0.59rem; letter-spacing: 0.06em; text-transform: uppercase; padding: 0.22rem 0.58rem; border-radius: 3px; font-weight: 500; border: 1px solid transparent; }
+    .tag-tool  { background: var(--tag-tool-bg);  color: var(--tag-tool-text);  border-color: var(--tag-tool-border); }
+    .tag-fin   { background: var(--tag-fin-bg);   color: var(--tag-fin-text);   border-color: var(--tag-fin-border); }
+    .tag-data  { background: var(--tag-data-bg);  color: var(--tag-data-text);  border-color: var(--tag-data-border); }
+    .tag-other { background: var(--tag-other-bg); color: var(--tag-other-text); border-color: var(--tag-other-border); }
+
+    .action-links { display: flex; gap: 0.8rem; flex-wrap: wrap; }
+    .action-btn { display: inline-flex; align-items: center; gap: 0.45rem; padding: 0.6rem 1.2rem; font-family: 'DM Mono', monospace; font-size: 0.67rem; letter-spacing: 0.08em; text-transform: uppercase; text-decoration: none; border-radius: 3px; transition: all 0.2s; }
+    .action-btn.primary { background: #ffffff; color: var(--navy); font-weight: 600; }
+    .action-btn.primary:hover { background: var(--off-white); }
+    .action-btn.secondary { border: 1px solid rgba(255,255,255,0.25); color: rgba(255,255,255,0.7); }
+    .action-btn.secondary:hover { border-color: rgba(255,255,255,0.5); color: #ffffff; }
+
+    .page-wrap { max-width: 860px; margin: 0 auto; padding: 4rem 3rem 5rem; }
+    .project-body { display: flex; flex-direction: column; gap: 3rem; }
+
+    h2 { font-family: 'DM Mono', monospace; font-size: 0.68rem; font-weight: 500; letter-spacing: 0.15em; text-transform: uppercase; color: var(--gray-700); margin-bottom: 1.2rem; padding-bottom: 0.8rem; border-bottom: 1px solid var(--gray-200); }
+    p { font-size: 0.93rem; color: var(--gray-700); line-height: 1.85; margin-bottom: 0.75rem; }
+    p strong { color: var(--gray-900); font-weight: 600; }
+    ul { list-style: none; padding: 0; display: flex; flex-direction: column; gap: 0.6rem; }
+    ul li { font-size: 0.9rem; color: var(--gray-700); padding-left: 1.3rem; position: relative; line-height: 1.7; }
+    ul li::before { content: '—'; position: absolute; left: 0; color: var(--gray-300); }
+    ul li strong { color: var(--gray-900); font-weight: 600; }
+
+    .embed-container { border: 1px solid var(--gray-200); border-radius: 6px; background: var(--off-white); overflow: hidden; }
+    .embed-label { padding: 0.75rem 1.2rem; border-bottom: 1px solid var(--gray-200); font-family: 'DM Mono', monospace; font-size: 0.62rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--gray-500); display: flex; justify-content: space-between; align-items: center; background: var(--white); }
+    .embed-dot { display: inline-block; width: 6px; height: 6px; border-radius: 50%; background: #34d399; margin-right: 0.4rem; }
+    .embed-container iframe { width: 100%; height: 460px; border: none; display: block; }
+
+    /* Data fields code-style box */
+    .data-fields { background: var(--off-white); border: 1px solid var(--gray-200); border-radius: 4px; padding: 1.2rem 1.5rem; margin-top: 1rem; display: flex; flex-wrap: wrap; gap: 0.4rem; }
+    .field-chip { font-family: 'DM Mono', monospace; font-size: 0.65rem; color: var(--gray-700); background: var(--white); border: 1px solid var(--gray-200); border-radius: 3px; padding: 0.15rem 0.5rem; }
+
+    .note { font-style: italic; font-size: 0.82rem; color: var(--gray-500); border-left: 2px solid var(--gray-200); padding-left: 1rem; margin-top: 0.8rem; }
+
+    footer { background: var(--navy-mid); border-top: 1px solid rgba(255,255,255,0.07); padding: 1.8rem 3rem; }
+    .footer-inner { max-width: 860px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; }
+    .footer-copy { font-family: 'DM Mono', monospace; font-size: 0.6rem; color: #64748b; }
+    .footer-back { font-family: 'DM Mono', monospace; font-size: 0.62rem; color: #64748b; text-decoration: none; letter-spacing: 0.08em; transition: color 0.2s; }
+    .footer-back:hover { color: #ffffff; }
+
+    @media (max-width: 768px) {
+      nav, footer { padding-left: 1.5rem; padding-right: 1.5rem; }
+      .project-hero, .page-wrap { padding-left: 1.5rem; padding-right: 1.5rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <a href="index.html" class="nav-brand">Andrés Felipe Alarcón</a>
+    <a href="index.html" class="nav-back">← Portfolio</a>
+  </nav>
+
+  <div class="project-hero">
+    <div class="project-hero-inner">
+      <div class="breadcrumb">
+        <a href="index.html">Portfolio</a><span>/</span><span>Project 02</span>
+      </div>
+      <p class="project-num">Project — 02 / 04</p>
+      <h1>Real Estate<br>Dashboard</h1>
+
+      <div class="meta-row">
+        <span class="meta-item">Tool <span>Power BI</span></span>
+        <span class="meta-item">Data <span>Excel Model</span></span>
+        <span class="meta-item">Status <span class="live">● Live</span></span>
+      </div>
+
+      <div class="tags">
+        <span class="tag tag-tool">Power BI</span>
+        <span class="tag tag-fin">Real Estate Finance</span>
+        <span class="tag tag-fin">Financial Performance</span>
+        <span class="tag tag-other">Property Management</span>
+        <span class="tag tag-data">Data Analytics</span>
+        <span class="tag tag-other">Financial Dashboard</span>
+      </div>
+
+      <div class="action-links">
+        <a href="https://app.powerbi.com/view?r=eyJrIjoiMDA5YzlkYjQtZjYwMC00NjllLTg2NGQtNDFlZWE3ZjVjMjgxIiwidCI6Ijk5ZjdiNTVlLTljYmUtNDY3Yi04MTQzLTkxOTc4MjkxOGFmYiIsImMiOjR9&pageName=04b18864a7286061a19f" target="_blank" class="action-btn primary">↗ View Live Dashboard</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="page-wrap">
+    <div class="project-body">
+
+      <!-- EMBED -->
+      <div>
+        <div class="embed-container">
+          <div class="embed-label">
+            <span><span class="embed-dot"></span>Power BI · Live</span>
+            <span>Real Estate Dashboard</span>
+          </div>
+          <iframe
+            title="Real Estate Dashboard"
+            src="https://app.powerbi.com/view?r=eyJrIjoiMDA5YzlkYjQtZjYwMC00NjllLTg2NGQtNDFlZWE3ZjVjMjgxIiwidCI6Ijk5ZjdiNTVlLTljYmUtNDY3Yi04MTQzLTkxOTc4MjkxOGFmYiIsImMiOjR9&pageName=04b18864a7286061a19f"
+            allowfullscreen="true">
+          </iframe>
+        </div>
+      </div>
+
+      <!-- OVERVIEW -->
+      <div>
+        <h2>Overview</h2>
+        <p>
+          This Power BI dashboard analyzes the <strong>performance of a real estate portfolio</strong>,
+          offering insights into property conditions, financial efficiency, and overall investment health.
+        </p>
+        <p>
+          The dataset was <strong>extracted, structured, and modeled in Excel</strong>, then imported
+          into <strong>Power BI</strong> for advanced visualization and analysis.
+        </p>
+      </div>
+
+      <!-- DATA -->
+      <div>
+        <h2>Data Fields</h2>
+        <p>Property-level data covers key operational and financial attributes across the full portfolio:</p>
+        <div class="data-fields">
+          <span class="field-chip">Property location</span>
+          <span class="field-chip">Price</span>
+          <span class="field-chip">Bedrooms</span>
+          <span class="field-chip">Floors</span>
+          <span class="field-chip">Waterfront</span>
+          <span class="field-chip">Condition</span>
+          <span class="field-chip">yr_built</span>
+          <span class="field-chip">yr_renovated</span>
+          <span class="field-chip">Monthly rent</span>
+          <span class="field-chip">Vacancy rate</span>
+          <span class="field-chip">Operating expenses</span>
+          <span class="field-chip">Maintenance cost (yearly)</span>
+          <span class="field-chip">Property taxes (% of value)</span>
+          <span class="field-chip">Insurance (yearly)</span>
+          <span class="field-chip">Capital expenditures (yearly)</span>
+          <span class="field-chip">Property management fee (%)</span>
+          <span class="field-chip">Rent</span>
+          <span class="field-chip">Loan-to-Value</span>
+          <span class="field-chip">Interest rate</span>
+          <span class="field-chip">Amortization years</span>
+          <span class="field-chip">Appreciation rate</span>
+        </div>
+      </div>
+
+      <!-- COMPONENTS -->
+      <div>
+        <h2>Dashboard Sections</h2>
+        <ul>
+          <li>
+            <strong>Portfolio Overview</strong> — Property conditions, renovation status, waterfront
+            classification, bedroom and floor distribution, and breakdown by year built
+          </li>
+          <li>
+            <strong>Geographical Insights</strong> — Interactive maps showing property locations
+            by condition and floor count across U.S. states
+          </li>
+          <li>
+            <strong>Financial Metrics</strong> — Key ratios and KPIs across four categories:
+            Revenue &amp; Income, Expense &amp; Efficiency, Profitability, and Valuation &amp; Return
+          </li>
+        </ul>
+      </div>
+
+      <!-- BUSINESS VALUE -->
+      <div>
+        <h2>Business Value</h2>
+        <p>
+          This dashboard gives real estate investors and property managers a <strong>single-view
+          command center</strong> for portfolio health — covering everything from occupancy and
+          operating costs to cap rates and return on investment. It replaces fragmented Excel
+          reports with an <strong>interactive, filterable view</strong> that supports faster,
+          better-informed acquisition and divestment decisions.
+        </p>
+        <p class="note">Designed for clarity and intuitive financial insight. Built as a reusable template adaptable to any property portfolio dataset.</p>
+      </div>
+
+    </div>
+  </div>
+
+  <footer>
+    <div class="footer-inner">
+      <span class="footer-copy">© 2026 Andrés Felipe Alarcón</span>
+      <a href="index.html" class="footer-back">← Back to Portfolio</a>
+    </div>
+  </footer>
+
+</body>
+</html>
