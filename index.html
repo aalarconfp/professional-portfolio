@@ -200,9 +200,9 @@
 
     h1 {
       font-family: 'Cormorant Garamond', serif;
-      font-size: clamp(3rem, 5vw, 5rem);
+      font-size: clamp(2rem, 3.2vw, 3.2rem);
       font-weight: 300;
-      line-height: 1.02;
+      line-height: 1.08;
       color: #ffffff;
       margin-bottom: 1.2rem;
     }
@@ -392,7 +392,7 @@
     .card-title {
       font-family: 'Cormorant Garamond', serif;
       font-size: 1.55rem;
-      font-weight: 400;
+      font-weight: 600;
       color: var(--navy);
       line-height: 1.2;
     }
@@ -401,13 +401,14 @@
       font-size: 0.85rem;
       color: var(--gray-700);
       line-height: 1.75;
-      flex: 1;
     }
 
     .card-tags {
       display: flex;
       flex-wrap: wrap;
       gap: 0.35rem;
+      flex: 1;
+      align-content: flex-end;
     }
 
     .tag {
@@ -624,6 +625,7 @@
     <a href="index.html" class="nav-brand">Andrés Felipe Alarcón</a>
     <ul class="nav-links">
       <li><a href="#projects">Projects</a></li>
+      <li><a href="https://www.linkedin.com/in/aalarconfp/" target="_blank">LinkedIn</a></li>
       <li><a href="https://www.credential.net/profile/aalarconfp/wallet" target="_blank">Credentials</a></li>
       <li><a href="#contact" class="nav-cta">Contact</a></li>
     </ul>
@@ -635,6 +637,7 @@
   <!-- MOBILE NAV DRAWER -->
   <div class="nav-drawer" id="navDrawer">
     <a href="#projects" onclick="closeNav()">Projects</a>
+    <a href="https://www.linkedin.com/in/aalarconfp/" target="_blank">LinkedIn</a>
     <a href="https://www.credential.net/profile/aalarconfp/wallet" target="_blank">Credentials</a>
     <a href="#contact" onclick="closeNav()">Contact</a>
   </div>
@@ -646,7 +649,7 @@
       <div class="hero-left">
         <div class="fade-in">
           <p class="hero-eyebrow">Financial Projects Portfolio</p>
-          <h1>Andrés Felipe<br><span class="dim">Alarcón</span></h1>
+          <h1>Andrés Felipe <span class="dim">Alarcón</span></h1>
           <p class="hero-subtitle" style="margin-top:1rem;">Finance &amp; Accounting · Medellín, Colombia</p>
         </div>
         <div class="fade-in" style="margin-top:2rem;">
@@ -657,9 +660,6 @@
             across the financial, real estate, and professional services sectors.
             Specialized in translating complex data into <strong>clear, decision-driving insights</strong>.
           </p>
-          <a href="https://www.credential.net/profile/aalarconfp/wallet" target="_blank" class="cred-btn" style="margin-top:1.8rem;">
-            ↗ View Credentials
-          </a>
         </div>
       </div>
 
@@ -827,7 +827,7 @@
         </div>
         <div class="contact-links">
           <a href="mailto:aalarconfp@gmail.com" class="contact-link">✉ aalarconfp@gmail.com</a>
-          <a href="https://www.credential.net/profile/aalarconfp/wallet" target="_blank" class="contact-link">↗ Accredible Credentials</a>
+          <a href="https://www.linkedin.com/in/aalarconfp/" target="_blank" class="contact-link">↗ LinkedIn</a>
         </div>
       </div>
     </div>
@@ -841,7 +841,7 @@
     </div>
   </footer>
 
-  <script>
+  <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
     function toggleNav() {
       document.getElementById('navDrawer').classList.toggle('open');
     }
@@ -850,13 +850,4 @@
     }
     // close drawer when clicking outside
     document.addEventListener('click', function(e) {
-      const drawer = document.getElementById('navDrawer');
-      const toggle = document.querySelector('.nav-toggle');
-      if (!drawer.contains(e.target) && !toggle.contains(e.target)) {
-        drawer.classList.remove('open');
-      }
-    });
-  </script>
-
-</body>
-</html>
+      const drawer = document.
