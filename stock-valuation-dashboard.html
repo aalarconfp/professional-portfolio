@@ -1,0 +1,753 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Stock Valuation Dashboard — Andrés Felipe Alarcón</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300&family=DM+Mono:wght@300;400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --navy:      #0d1b2e;
+      --navy-mid:  #112240;
+      --white:     #ffffff;
+      --off-white: #f8fafc;
+      --gray-100:  #f1f5f9;
+      --gray-200:  #e2e8f0;
+      --gray-300:  #cbd5e1;
+      --gray-500:  #64748b;
+      --gray-700:  #334155;
+      --gray-900:  #0f172a;
+      --text:      #1e293b;
+      --blue:      #1d4ed8;
+      --amber:     #d97706;
+
+      --tag-tool-bg:     #fef3c7;
+      --tag-tool-text:   #92400e;
+      --tag-tool-border: #fcd34d;
+      --tag-fin-bg:      #fee2e2;
+      --tag-fin-text:    #991b1b;
+      --tag-fin-border:  #fca5a5;
+      --tag-data-bg:     #dbeafe;
+      --tag-data-text:   #1e40af;
+      --tag-data-border: #93c5fd;
+      --tag-other-bg:    #ede9fe;
+      --tag-other-text:  #5b21b6;
+      --tag-other-border:#c4b5fd;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--white);
+      color: var(--text);
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 400;
+      line-height: 1.7;
+    }
+
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0; z-index: 100;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 3rem;
+      background: rgba(255,255,255,0.97);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--gray-200);
+    }
+
+    .nav-brand {
+      font-size: 0.92rem;
+      font-weight: 600;
+      color: var(--navy);
+      text-decoration: none;
+    }
+
+    .nav-back {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.67rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--gray-500);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .nav-back:hover { color: var(--navy); }
+
+    /* Amber accent for this valuation project */
+    .project-hero {
+      background: var(--navy);
+      padding: 8rem 3rem 4rem;
+      border-top: 6px solid var(--amber);
+    }
+
+    .project-hero-inner { max-width: 860px; margin: 0 auto; }
+
+    .breadcrumb {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.62rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: #64748b;
+      margin-bottom: 2rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .breadcrumb a { color: #94a3b8; text-decoration: none; transition: color 0.2s; }
+    .breadcrumb a:hover { color: #ffffff; }
+
+    .project-num {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.6rem;
+      color: #64748b;
+      letter-spacing: 0.18em;
+      margin-bottom: 0.8rem;
+    }
+
+    h1 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(2.4rem, 5vw, 3.6rem);
+      font-weight: 300;
+      color: #ffffff;
+      line-height: 1.1;
+      margin-bottom: 1.8rem;
+    }
+
+    .meta-row {
+      display: flex;
+      gap: 2rem;
+      flex-wrap: wrap;
+      align-items: center;
+      margin-bottom: 1.4rem;
+    }
+
+    .meta-item {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.62rem;
+      color: #64748b;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+
+    .meta-item span { color: rgba(255,255,255,0.75); }
+
+    .tags { display: flex; flex-wrap: wrap; gap: 0.35rem; margin-bottom: 2rem; }
+
+    .tag {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.59rem;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      padding: 0.22rem 0.58rem;
+      border-radius: 3px;
+      font-weight: 500;
+      border: 1px solid transparent;
+    }
+
+    .tag-tool  { background: var(--tag-tool-bg);  color: var(--tag-tool-text);  border-color: var(--tag-tool-border); }
+    .tag-fin   { background: var(--tag-fin-bg);   color: var(--tag-fin-text);   border-color: var(--tag-fin-border); }
+    .tag-data  { background: var(--tag-data-bg);  color: var(--tag-data-text);  border-color: var(--tag-data-border); }
+    .tag-other { background: var(--tag-other-bg); color: var(--tag-other-text); border-color: var(--tag-other-border); }
+
+    /* ── CONTENT ──────────────────────────── */
+    .page-wrap {
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 4rem 3rem 5rem;
+    }
+
+    .project-body { display: flex; flex-direction: column; gap: 3rem; }
+
+    h2 {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.68rem;
+      font-weight: 500;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--gray-700);
+      margin-bottom: 1.2rem;
+      padding-bottom: 0.8rem;
+      border-bottom: 1px solid var(--gray-200);
+    }
+
+    p {
+      font-size: 0.93rem;
+      color: var(--gray-700);
+      line-height: 1.85;
+      margin-bottom: 0.75rem;
+    }
+
+    p strong { color: var(--gray-900); font-weight: 600; }
+
+    ul { list-style: none; padding: 0; display: flex; flex-direction: column; gap: 0.6rem; }
+
+    ul li {
+      font-size: 0.9rem;
+      color: var(--gray-700);
+      padding-left: 1.3rem;
+      position: relative;
+      line-height: 1.7;
+    }
+
+    ul li::before { content: '—'; position: absolute; left: 0; color: var(--gray-300); }
+    ul li strong { color: var(--gray-900); font-weight: 600; }
+
+    .action-links { display: flex; gap: 0.8rem; flex-wrap: wrap; }
+
+    .action-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.45rem;
+      padding: 0.6rem 1.2rem;
+      font-family: 'DM Mono', monospace;
+      font-size: 0.67rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      text-decoration: none;
+      border-radius: 3px;
+      transition: all 0.2s;
+    }
+
+    .action-btn.primary { background: #ffffff; color: var(--navy); font-weight: 600; }
+    .action-btn.primary:hover { background: var(--off-white); }
+    .action-btn.secondary { border: 1px solid rgba(255,255,255,0.25); color: rgba(255,255,255,0.7); }
+    .action-btn.secondary:hover { border-color: rgba(255,255,255,0.5); color: #ffffff; }
+
+    .embed-container {
+      border: 1px solid var(--gray-200);
+      border-radius: 6px;
+      background: var(--off-white);
+      overflow: hidden;
+    }
+
+    .embed-label {
+      padding: 0.75rem 1.2rem;
+      border-bottom: 1px solid var(--gray-200);
+      font-family: 'DM Mono', monospace;
+      font-size: 0.62rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--gray-500);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: var(--white);
+    }
+
+    .embed-dot { display: inline-block; width: 6px; height: 6px; border-radius: 50%; background: #34d399; margin-right: 0.4rem; }
+
+    .embed-container iframe { width: 100%; height: 460px; border: none; display: block; }
+
+    /* Screenshot / preview container (fallback) */
+    .preview-container {
+      border: 1px solid var(--gray-200);
+      border-radius: 6px;
+      background: var(--navy);
+      overflow: hidden;
+    }
+
+    .preview-label {
+      padding: 0.75rem 1.2rem;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+      font-family: 'DM Mono', monospace;
+      font-size: 0.62rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: #94a3b8;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: rgba(255,255,255,0.04);
+    }
+
+    .preview-inner {
+      padding: 2.4rem 2rem;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1px;
+      background: rgba(255,255,255,0.06);
+    }
+
+    .metric-cell {
+      background: #0d1b2e;
+      padding: 1.2rem 1rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.3rem;
+    }
+
+    .metric-label {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.55rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: #64748b;
+    }
+
+    .metric-value {
+      font-family: 'DM Mono', monospace;
+      font-size: 1.05rem;
+      font-weight: 400;
+      color: #e2e8f0;
+    }
+
+    .metric-value.positive { color: #34d399; }
+    .metric-value.negative { color: #f87171; }
+    .metric-value.amber    { color: #fbbf24; }
+
+    .signal-bar {
+      grid-column: 1 / -1;
+      background: rgba(13, 27, 46, 0.95);
+      padding: 1rem 1rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-top: 1px solid rgba(255,255,255,0.06);
+      margin-top: 1px;
+    }
+
+    .signal-label {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.6rem;
+      color: #64748b;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+
+    .signal-badge {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.65rem;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      padding: 0.25rem 0.75rem;
+      border-radius: 2px;
+      background: rgba(52, 211, 153, 0.12);
+      color: #34d399;
+      border: 1px solid rgba(52, 211, 153, 0.3);
+    }
+
+    .method-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1px;
+      background: rgba(255,255,255,0.06);
+      border-top: 1px solid rgba(255,255,255,0.06);
+    }
+
+    .method-cell {
+      background: #0d1b2e;
+      padding: 0.9rem 1rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .method-name {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.58rem;
+      color: #94a3b8;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .method-val {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.78rem;
+      color: #e2e8f0;
+    }
+
+    .preview-caption {
+      padding: 0.7rem 1.2rem;
+      font-family: 'DM Mono', monospace;
+      font-size: 0.58rem;
+      color: #64748b;
+      letter-spacing: 0.08em;
+      background: rgba(255,255,255,0.02);
+      border-top: 1px solid rgba(255,255,255,0.05);
+      text-align: center;
+    }
+
+    /* pipeline diagram */
+    .pipeline {
+      display: flex;
+      align-items: center;
+      gap: 0;
+      flex-wrap: wrap;
+      margin: 1.2rem 0 0.5rem;
+    }
+
+    .pipeline-step {
+      background: var(--gray-100);
+      border: 1px solid var(--gray-200);
+      border-radius: 3px;
+      padding: 0.55rem 0.9rem;
+      font-family: 'DM Mono', monospace;
+      font-size: 0.62rem;
+      color: var(--gray-700);
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+
+    .pipeline-step.highlight {
+      background: #fef3c7;
+      border-color: #fcd34d;
+      color: #92400e;
+    }
+
+    .pipeline-arrow {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.7rem;
+      color: var(--gray-300);
+      padding: 0 0.4rem;
+    }
+
+    /* sheet cards */
+    .sheet-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 0.8rem;
+      margin-top: 1rem;
+    }
+
+    .sheet-card {
+      border: 1px solid var(--gray-200);
+      border-radius: 4px;
+      padding: 1rem 1.1rem;
+      background: var(--off-white);
+    }
+
+    .sheet-num {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.55rem;
+      color: var(--gray-500);
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      margin-bottom: 0.35rem;
+    }
+
+    .sheet-title {
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: var(--gray-900);
+      margin-bottom: 0.3rem;
+    }
+
+    .sheet-desc {
+      font-size: 0.78rem;
+      color: var(--gray-500);
+      line-height: 1.5;
+    }
+
+    .source-box {
+      display: flex;
+      align-items: center;
+      gap: 1.2rem;
+      padding: 0.9rem 1.2rem;
+      border: 1px solid var(--gray-200);
+      background: var(--off-white);
+      border-radius: 3px;
+      margin-top: 1.2rem;
+    }
+
+    .source-label {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.6rem;
+      color: var(--gray-500);
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+
+    .source-box a {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.68rem;
+      color: var(--blue);
+      text-decoration: none;
+      font-weight: 500;
+    }
+
+    .source-box a:hover { text-decoration: underline; }
+
+    .note {
+      font-style: italic;
+      font-size: 0.82rem;
+      color: var(--gray-500);
+      border-left: 2px solid var(--gray-200);
+      padding-left: 1rem;
+      margin-top: 0.8rem;
+    }
+
+    footer {
+      background: var(--navy-mid);
+      border-top: 1px solid rgba(255,255,255,0.07);
+      padding: 1.8rem 3rem;
+    }
+
+    .footer-inner {
+      max-width: 860px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .footer-copy { font-family: 'DM Mono', monospace; font-size: 0.6rem; color: #64748b; }
+
+    .footer-back {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.62rem;
+      color: #64748b;
+      text-decoration: none;
+      letter-spacing: 0.08em;
+      transition: color 0.2s;
+    }
+
+    .footer-back:hover { color: #ffffff; }
+
+    @media (max-width: 768px) {
+      nav, footer { padding-left: 1.5rem; padding-right: 1.5rem; }
+      .project-hero, .page-wrap { padding-left: 1.5rem; padding-right: 1.5rem; }
+      .preview-inner { grid-template-columns: repeat(2, 1fr); }
+      .sheet-grid { grid-template-columns: 1fr; }
+      .method-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <a href="index.html" class="nav-brand">Andrés Felipe Alarcón</a>
+    <a href="index.html" class="nav-back">← Portfolio</a>
+  </nav>
+
+  <div class="project-hero">
+    <div class="project-hero-inner">
+      <div class="breadcrumb">
+        <a href="index.html">Portfolio</a>
+        <span>/</span>
+        <span>Project 02</span>
+      </div>
+
+      <p class="project-num">Project — 02 / 05</p>
+      <h1>Stock Valuation<br>Dashboard</h1>
+
+      <div class="meta-row">
+        <span class="meta-item">Tool <span>Excel · Power Query · Power Pivot</span></span>
+        <span class="meta-item">Source <span>StockAnalysis Pro · Yahoo Finance</span></span>
+        <span class="meta-item">Scope <span>US Equities</span></span>
+      </div>
+
+      <div class="tags">
+        <span class="tag tag-tool">Excel</span>
+        <span class="tag tag-tool">Power Query</span>
+        <span class="tag tag-tool">Power Pivot</span>
+        <span class="tag tag-fin">Stock Valuation</span>
+        <span class="tag tag-fin">DCF</span>
+        <span class="tag tag-fin">Financial Analysis</span>
+        <span class="tag tag-data">Data Pipeline</span>
+        <span class="tag tag-other">Investment Research</span>
+      </div>
+
+      <div class="action-links">
+        <a href="https://eafit-my.sharepoint.com/personal/aalarco2_eafit_edu_co/_layouts/15/Doc.aspx?sourcedoc={68f918a5-bd1c-4517-914a-dd7a1aa87811}&action=embedview&wdAllowInteractivity=False&wdHideGridlines=True&wdHideHeaders=True&wdDownloadButton=True&wdInConfigurator=True&wdInConfigurator=True&edaebf=rslc0" target="_blank" class="action-btn primary">↗ View Live Dashboard</a>
+        <a href="YOUR_YOUTUBE_URL" target="_blank" class="action-btn secondary">▶ 4-Min Walkthrough</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="page-wrap">
+    <div class="project-body">
+
+      <!-- Live Excel Online embed -->
+      <div>
+        <div class="embed-container">
+          <div class="embed-label">
+            <span><span class="embed-dot"></span>Excel Online · Live — MSFT Sample (FY 6/30/2025)</span>
+            <span>Stock Valuation Dashboard</span>
+          </div>
+          <iframe
+            title="Stock Valuation Dashboard — Andrés Felipe Alarcón"
+            src="https://eafit-my.sharepoint.com/personal/aalarco2_eafit_edu_co/_layouts/15/Doc.aspx?sourcedoc={68f918a5-bd1c-4517-914a-dd7a1aa87811}&action=embedview&wdAllowInteractivity=False&wdHideGridlines=True&wdHideHeaders=True&wdDownloadButton=True&wdInConfigurator=True&wdInConfigurator=True&edaebf=rslc0"
+            allowfullscreen="true">
+          </iframe>
+        </div>
+      </div>
+
+
+      <!-- Overview -->
+      <div>
+        <h2>Overview</h2>
+        <p>
+          This dashboard delivers a <strong>full-spectrum equity valuation workflow</strong> inside
+          a single Excel workbook — from raw financial statement data through to a
+          probability-weighted intrinsic value consensus and a BUY / SELL signal.
+        </p>
+        <p>
+          It was built to support <strong>retail investment research</strong> on US equities,
+          replacing ad-hoc spreadsheets with a repeatable, institutionally structured process.
+          Any ticker available on StockAnalysis.com can be loaded through the Power Query
+          pipeline without rebuilding the model — reducing a full valuation from hours to minutes.
+        </p>
+        <p class="note">
+          Annual by default. Convertible to quarterly or trailing-twelve-months (TTM) view
+          without structural changes to the data model. Dashboard language reflects the
+          primary investment market (English / USD).
+        </p>
+      </div>
+
+      <!-- Data & Methodology -->
+      <div>
+        <h2>Data &amp; Methodology</h2>
+        <p>
+          Financial data is sourced entirely from <strong>StockAnalysis.com Pro</strong>, covering
+          10 years of annual statements across income, balance sheet, cash flow, and ratios.
+          Price and market data is pulled from <strong>Yahoo Finance</strong>, and company
+          profile metadata from the Stock Data add-in for Excel. All sources are
+          integrated through a unified Power Query pipeline.
+        </p>
+
+        <div style="margin-top:1.2rem; margin-bottom:1.4rem;">
+          <div class="pipeline">
+            <div class="pipeline-step">StockAnalysis Pro CSV</div>
+            <div class="pipeline-arrow">→</div>
+            <div class="pipeline-step highlight">Power Query</div>
+            <div class="pipeline-arrow">→</div>
+            <div class="pipeline-step highlight">Power Pivot</div>
+            <div class="pipeline-arrow">→</div>
+            <div class="pipeline-step">Pivot Charts</div>
+            <div class="pipeline-arrow">→</div>
+            <div class="pipeline-step">Dashboard</div>
+          </div>
+        </div>
+
+        <ul>
+          <li><strong>Power Query</strong> — Extraction, cleaning, and normalization of all financial statement CSVs; calendar table for time-intelligence slicing</li>
+          <li><strong>Power Pivot</strong> — Relational data model linking financials, ratios, price, and calendar; DAX measures for YoY growth, averages, and margins</li>
+          <li><strong>Pivot Charts + GETPIVOTDATA</strong> — Dynamic visualizations and formula-level data referencing across all sheets</li>
+        </ul>
+
+        <div style="display:flex; gap:0.6rem; flex-wrap:wrap; margin-top:1.2rem;">
+          <div class="source-box" style="flex:1; min-width:200px;">
+            <span class="source-label">Primary Data</span>
+            <a href="https://stockanalysis.com/" target="_blank">↗ StockAnalysis.com Pro</a>
+          </div>
+          <div class="source-box" style="flex:1; min-width:200px;">
+            <span class="source-label">Price Data</span>
+            <a href="https://finance.yahoo.com/" target="_blank">↗ Yahoo Finance</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Dashboard Sheets -->
+      <div>
+        <h2>Dashboard Sheets</h2>
+        <p>
+          The workbook is organized into <strong>six analytical sheets</strong>, each serving a
+          distinct role in the valuation process — from screening fundamentals to
+          synthesizing a final investment signal.
+        </p>
+
+        <div class="sheet-grid">
+          <div class="sheet-card">
+            <div class="sheet-num">Sheet 01</div>
+            <div class="sheet-title">Stock Screener</div>
+            <div class="sheet-desc">
+              One-page snapshot: profitability, per-share metrics, liquidity, solvency,
+              FCF, dividend data, growth rates, and market valuation. Includes price
+              chart and earnings/cash flow history over 10 years.
+            </div>
+          </div>
+          <div class="sheet-card">
+            <div class="sheet-num">Sheet 02</div>
+            <div class="sheet-title">Discounted Cash Flow (DCF)</div>
+            <div class="sheet-desc">
+              10-year FCF projection with configurable growth rate, WACC, and terminal
+              growth rate. Full equity bridge, share-count adjustment, and a two-dimensional
+              sensitivity matrix (WACC × terminal growth rate).
+            </div>
+          </div>
+          <div class="sheet-card">
+            <div class="sheet-num">Sheet 03</div>
+            <div class="sheet-title">Graham's Valuation</div>
+            <div class="sheet-desc">
+              Both Graham formulas side-by-side: the 1962 Original (no rate adjustment)
+              and the 1974 Revised (AAA bond yield–adjusted). Supports historical EPS or
+              forward EPS as inputs.
+            </div>
+          </div>
+          <div class="sheet-card">
+            <div class="sheet-num">Sheet 04</div>
+            <div class="sheet-title">Comparable Company Multiples</div>
+            <div class="sheet-desc">
+              Peer group valuation on P/E and EV/EBIT. Configurable peer set with
+              automatic implied price calculation relative to subject company fundamentals.
+            </div>
+          </div>
+          <div class="sheet-card">
+            <div class="sheet-num">Sheet 05</div>
+            <div class="sheet-title">Historical Multiples</div>
+            <div class="sheet-desc">
+              10-year trailing history of P/E, P/B, P/S, EV/EBIT, and FCF Yield.
+              Benchmarks TTM multiples against their own 10-year average and median to
+              flag compression or expansion vs. historical norms.
+            </div>
+          </div>
+          <div class="sheet-card">
+            <div class="sheet-num">Sheet 06</div>
+            <div class="sheet-title">Intrinsic Value Summary</div>
+            <div class="sheet-desc">
+              Consolidates all four methods into a single view. Displays average and
+              median intrinsic values, applies a configurable margin of safety, and
+              outputs a consensus BUY / SELL signal with upside / downside percentage.
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Business Value -->
+      <div>
+        <h2>Business Value</h2>
+        <p>
+          The dashboard addresses the core challenge of <strong>methodological inconsistency</strong>
+          in retail investment research: each valuation model (DCF, Graham's, multiples) can
+          produce wildly different results in isolation. By structuring all four methods inside
+          a single normalized data model and forcing an explicit consensus output, it imposes
+          discipline on the process.
+        </p>
+        <p>
+          For a portfolio manager, analyst, or serious individual investor, this workbook replaces
+          scattered models with a <strong>single, audit-ready file</strong> that clearly separates
+          manual inputs (blue), formula outputs (black), and cross-sheet links (green) — the same
+          color convention used in institutional DCF models.
+        </p>
+        <ul>
+          <li><strong>Investment screening</strong> — Filter any US equity by fundamental quality before committing to a full valuation</li>
+          <li><strong>Valuation synthesis</strong> — Aggregate four independent methods to reduce anchoring to any single estimate</li>
+          <li><strong>Repeatable process</strong> — New ticker loaded via Power Query refresh; no structural rebuild required</li>
+          <li><strong>Client reporting</strong> — Clean, print-ready layout suitable for investment committee presentations or client deliverables</li>
+        </ul>
+        <p class="note">
+          Designed for annual analysis of US-listed equities. A parallel workflow adapted for BVC
+          (Colombian exchange) equities uses Supersociedades data and is covered under a separate project.
+        </p>
+      </div>
+
+    </div>
+  </div>
+
+  <footer>
+    <div class="footer-inner">
+      <span class="footer-copy">© 2026 Andrés Felipe Alarcón</span>
+      <a href="index.html" class="footer-back">← Back to Portfolio</a>
+    </div>
+  </footer>
+
+</body>
+</html>
