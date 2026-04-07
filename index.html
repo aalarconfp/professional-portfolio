@@ -369,9 +369,10 @@
     }
 
     .card-band { height: 6px; width: 100%; flex-shrink: 0; }
-    .band-red    { background: linear-gradient(90deg, #dc2626, #ef4444); }
-    .band-blue   { background: linear-gradient(90deg, #1d4ed8, #3b82f6); }
-    .band-navy   { background: linear-gradient(90deg, #0d1b2e, #1e3a5f); }
+    .band-red      { background: linear-gradient(90deg, #dc2626, #ef4444); }
+    .band-blue     { background: linear-gradient(90deg, #1d4ed8, #3b82f6); }
+    .band-screener { background: linear-gradient(90deg, #0ea5e9, #10b981); }
+    .band-navy     { background: linear-gradient(90deg, #0d1b2e, #1e3a5f); }
     .band-budget { background: linear-gradient(90deg, #38bdf8, #fb923c, #a78bfa); }
     .band-trading{ background: linear-gradient(90deg, #2563eb, #fb923c); }
 
@@ -667,7 +668,7 @@
       <!-- Right: quick stats panel -->
       <div class="hero-right fade-in">
         <div class="hero-stat">
-          <div class="hero-stat-value">5</div>
+          <div class="hero-stat-value">6</div>
           <div class="hero-stat-label">Projects</div>
         </div>
         <div class="hero-stat-divider"></div>
@@ -765,11 +766,38 @@
         </div>
       </a>
 
-      <!-- 03 Personal Budget — Light Blue / Orange / Purple -->
+      <!-- 03 Stock Fundamental Screener — Light Blue / Green -->
+      <a href="bvc-fundamental-screener-page_1.html" class="project-card">
+        <div class="card-band band-screener"></div>
+        <div class="card-body">
+          <div class="card-number">Project — 03</div>
+          <div class="card-title">Stock Fundamental Screener</div>
+          <p class="card-desc">
+            Automated fundamental screener for Colombian equities (BVC) built in Excel
+            with Power Query, Power Pivot, and VBA. Combines a TradingView data extraction
+            workflow with Claude AI for structured parsing, producing a ranked database
+            of stocks by financial quality and valuation.
+          </p>
+          <div class="card-tags">
+            <span class="tag tag-tool">Excel</span>
+            <span class="tag tag-tool">Power Query</span>
+            <span class="tag tag-tool">VBA</span>
+            <span class="tag tag-fin">Fundamental Analysis</span>
+            <span class="tag tag-fin">Stock Screener</span>
+            <span class="tag tag-data">BVC · Colombia</span>
+          </div>
+        </div>
+        <div class="card-footer">
+          <span class="card-status">● Live</span>
+          <span class="card-arrow">→</span>
+        </div>
+      </a>
+
+      <!-- 04 Personal Budget — Light Blue / Orange / Purple -->
       <a href="personal-budget-dashboard.html" class="project-card">
         <div class="card-band band-budget"></div>
         <div class="card-body">
-          <div class="card-number">Project — 03</div>
+          <div class="card-number">Project — 04</div>
           <div class="card-title">Personal Budget Dashboard</div>
           <p class="card-desc">
             Comprehensive personal finance tracking dashboard with income/expense categorization,
@@ -789,11 +817,11 @@
         </div>
       </a>
 
-      <!-- 04 Trading — Blue / Light Orange -->
+      <!-- 05 Trading — Blue / Light Orange -->
       <a href="trading-dashboard.html" class="project-card">
         <div class="card-band band-trading"></div>
         <div class="card-body">
-          <div class="card-number">Project — 04</div>
+          <div class="card-number">Project — 05</div>
           <div class="card-title">Trading Dashboard</div>
           <p class="card-desc">
             Technical analysis dashboard for Dow Jones using SQL-sourced data.
@@ -813,11 +841,11 @@
         </div>
       </a>
 
-      <!-- 05 Real Estate — Navy Blue -->
+      <!-- 06 Real Estate — Navy Blue -->
       <a href="real-estate-dashboard.html" class="project-card">
         <div class="card-band band-navy"></div>
         <div class="card-body">
-          <div class="card-number">Project — 05</div>
+          <div class="card-number">Project — 06</div>
           <div class="card-title">Real Estate Dashboard</div>
           <p class="card-desc">
             Property performance and portfolio analytics dashboard built in Power BI.
