@@ -539,25 +539,22 @@
       <h1>Stock Valuation<br>Dashboard</h1>
 
       <div class="meta-row">
-        <span class="meta-item">Tool <span>Excel · Power Query · Power Pivot</span></span>
+        <span class="meta-item">Tool <span>Excel</span></span>
         <span class="meta-item">Source <span>StockAnalysis Pro · Yahoo Finance</span></span>
         <span class="meta-item">Scope <span>US Equities</span></span>
+        <span class="meta-item">Status <span style="color:#34d399;">● Live</span></span>
       </div>
 
       <div class="tags">
         <span class="tag tag-tool">Excel</span>
-        <span class="tag tag-tool">Power Query</span>
-        <span class="tag tag-tool">Power Pivot</span>
         <span class="tag tag-fin">Stock Valuation</span>
-        <span class="tag tag-fin">DCF</span>
         <span class="tag tag-fin">Financial Analysis</span>
-        <span class="tag tag-data">Data Pipeline</span>
         <span class="tag tag-other">Investment Research</span>
       </div>
 
       <div class="action-links">
         <a href="https://eafit-my.sharepoint.com/personal/aalarco2_eafit_edu_co/_layouts/15/Doc.aspx?sourcedoc={68f918a5-bd1c-4517-914a-dd7a1aa87811}&action=embedview&wdAllowInteractivity=False&wdHideGridlines=True&wdHideHeaders=True&wdDownloadButton=True&wdInConfigurator=True&wdInConfigurator=True&edaebf=rslc0" target="_blank" class="action-btn primary">↗ View Live Dashboard</a>
-        <a href="YOUR_YOUTUBE_URL" target="_blank" class="action-btn secondary">▶ 4-Min Walkthrough</a>
+        <a href="https://youtu.be/mVAMcd4bJlI" target="_blank" class="action-btn secondary">▶ 5-Min Walkthrough</a>
       </div>
     </div>
   </div>
@@ -645,94 +642,21 @@
         </div>
       </div>
 
-      <!-- Dashboard Sheets -->
-      <div>
-        <h2>Dashboard Sheets</h2>
-        <p>
-          The workbook is organized into <strong>six analytical sheets</strong>, each serving a
-          distinct role in the valuation process — from screening fundamentals to
-          synthesizing a final investment signal.
-        </p>
-
-        <div class="sheet-grid">
-          <div class="sheet-card">
-            <div class="sheet-num">Sheet 01</div>
-            <div class="sheet-title">Stock Screener</div>
-            <div class="sheet-desc">
-              One-page snapshot: profitability, per-share metrics, liquidity, solvency,
-              FCF, dividend data, growth rates, and market valuation. Includes price
-              chart and earnings/cash flow history over 10 years.
-            </div>
-          </div>
-          <div class="sheet-card">
-            <div class="sheet-num">Sheet 02</div>
-            <div class="sheet-title">Discounted Cash Flow (DCF)</div>
-            <div class="sheet-desc">
-              10-year FCF projection with configurable growth rate, WACC, and terminal
-              growth rate. Full equity bridge, share-count adjustment, and a two-dimensional
-              sensitivity matrix (WACC × terminal growth rate).
-            </div>
-          </div>
-          <div class="sheet-card">
-            <div class="sheet-num">Sheet 03</div>
-            <div class="sheet-title">Graham's Valuation</div>
-            <div class="sheet-desc">
-              Both Graham formulas side-by-side: the 1962 Original (no rate adjustment)
-              and the 1974 Revised (AAA bond yield–adjusted). Supports historical EPS or
-              forward EPS as inputs.
-            </div>
-          </div>
-          <div class="sheet-card">
-            <div class="sheet-num">Sheet 04</div>
-            <div class="sheet-title">Comparable Company Multiples</div>
-            <div class="sheet-desc">
-              Peer group valuation on P/E and EV/EBIT. Configurable peer set with
-              automatic implied price calculation relative to subject company fundamentals.
-            </div>
-          </div>
-          <div class="sheet-card">
-            <div class="sheet-num">Sheet 05</div>
-            <div class="sheet-title">Historical Multiples</div>
-            <div class="sheet-desc">
-              10-year trailing history of P/E, P/B, P/S, EV/EBIT, and FCF Yield.
-              Benchmarks TTM multiples against their own 10-year average and median to
-              flag compression or expansion vs. historical norms.
-            </div>
-          </div>
-          <div class="sheet-card">
-            <div class="sheet-num">Sheet 06</div>
-            <div class="sheet-title">Intrinsic Value Summary</div>
-            <div class="sheet-desc">
-              Consolidates all four methods into a single view. Displays average and
-              median intrinsic values, applies a configurable margin of safety, and
-              outputs a consensus BUY / SELL signal with upside / downside percentage.
-            </div>
-          </div>
-        </div>
-      </div>
-
       <!-- Business Value -->
       <div>
         <h2>Business Value</h2>
         <p>
-          The dashboard addresses the core challenge of <strong>methodological inconsistency</strong>
-          in retail investment research: each valuation model (DCF, Graham's, multiples) can
-          produce wildly different results in isolation. By structuring all four methods inside
-          a single normalized data model and forcing an explicit consensus output, it imposes
-          discipline on the process.
+          Built for retail investors who want institutional-grade rigor without institutional overhead.
+          The workbook consolidates DCF, Graham's, comparable multiples, and historical multiples into
+          a single file — reducing a full valuation from hours to minutes and eliminating the
+          scattered, ad-hoc spreadsheets that make research hard to reproduce or revisit.
         </p>
         <p>
-          For a portfolio manager, analyst, or serious individual investor, this workbook replaces
-          scattered models with a <strong>single, audit-ready file</strong> that clearly separates
-          manual inputs (blue), formula outputs (black), and cross-sheet links (green) — the same
-          color convention used in institutional DCF models.
+          Loading a new ticker requires only a Power Query refresh — no structural rebuild.
+          The color-coded input convention (blue = manual, black = formula, green = cross-sheet link)
+          keeps the model auditable and easy to hand off. Any US equity available on
+          StockAnalysis.com can be analyzed with the same workflow.
         </p>
-        <ul>
-          <li><strong>Investment screening</strong> — Filter any US equity by fundamental quality before committing to a full valuation</li>
-          <li><strong>Valuation synthesis</strong> — Aggregate four independent methods to reduce anchoring to any single estimate</li>
-          <li><strong>Repeatable process</strong> — New ticker loaded via Power Query refresh; no structural rebuild required</li>
-          <li><strong>Client reporting</strong> — Clean, print-ready layout suitable for investment committee presentations or client deliverables</li>
-        </ul>
         <p class="note">
           Designed for annual analysis of US-listed equities. Important notice: This page does not
           constitute investment advice. All analysis presented here is for educational purposes only.
